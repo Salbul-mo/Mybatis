@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+  <typeAliases>
+    <typeAlias type="org.hta.member.domain.Member" alias="Member"/>
+  </typeAliases>
+  <!--
+  typeAliases 엘리먼트 : 자바 클래스 이름( 패키지 이름 포함 ) 에 대한 별명을 설정하는데
+  SQL Mapper 파일에서 사용할 별명들이다.
+
+  1. typeAlias 태그의 type 속성 값은 패키지 이름을 포함한 클래스 이름이다.
+  2. typeAlias 태그의 alias 속성은 type 에서 지정한 클래스의 별명이다.
+  3. member.xml 에서
+    <insert id = "insert" parameterType="Member">
+    parameterType = "Member" 에서 사용된다.
+ -->
+
+  <environments default="development">
+
+    <!--
+    <environments> 엘리먼트 :
+      프레임워크에서 사용할 데이터베이스 정보(트랜잭션 관리자, 데이터 소스) 를 설정한다.
+      이 태그를 이용하면 여러 개의 데이터 베이스 접속 정보를 설정할 수 있다.
+      설정된 정보 중 하나를 선택할 때 default 속성을 사용한다.
+
+    <environment> 엘리먼트 : 각각의 데이터베이스 접속 정보를 정의한다.
+    id 속성은 <environment> 를 구분할 때 사용할 식별자이다.
+
+    <transactionManager> 엘리먼트
+      트랜잭션 관리 유형 두가지 - type 에서 설정한다.
+      1. JDBC : 직접 JDBC 의 commit, rollback 기능을 사용하여 mybatis 자체에서 트랜잭션을 관리한다.
+
+      2. MANAGED : Java EE 애플리케이션 서버 (JBoss, WebLogic, WebSphere) 나
+                    서블릿 컨테이너(톰캣 서버)에서 트랜잭션을 관리한다.
+ -->
+    <environment id="development">
+      <transactionManager type="JDBC" />
+      <dataSource type="POOLED">
+        <!--
+         <dataSource> 엘리먼트
+          mybatis는 JDBC 표준 인터페이스인 javax.sql.DataSource 구현체를 이용하여 DB 커넥션을 다룬다.
+
+          사용 가능한 세가지 유형
+          1. UNPOOLED : DB 커넥션을 요청할 때마다 매번 커넥션 객체를 생성한다.
+                  높은 성능을 요구하지 않는 단순한 애플리케이션에 적합하다.
+
+          2. POOLED : 미리 DB 커넥션 객체를 생성해 두고 요청하면 즉시 반환한다.
+
+          3. JNDI : Java EE 애플리케이션 서버나 서블릿 컨테이너 (예 : 톰켓 서버) 에서 제공하는 데이터 소스 (DataSource) 를 사용한다.
+         -->
+        <property name="driver"
+                  value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url"
+                  value="jdbc:oracle:thin:@localhost:1521:xe"/>
+        <property name="username" value="scott"/>
+        <property name="password" value="TIGER"/>
+      </dataSource>
+    </environment>
+  </environments>
+
+  <!--
+    <mappers> 엘리먼트 : SQL Mapper 파일들의 정보를 설정할 때 사용한다.
+                        각각의 SQL Mapper 파일의 정보는 <mapper> 태그로 정의한다.
+    SQL Mapper 파일의 경로를 설정할 때 두 가지 방법이 있다.
+    1. 자바의 클래스 경로를 사용하는 방법 : resource 속성을 사용한다.
+    2. 파일 시스템 경로를 사용하는 방법 : url 속성을 사용한다.
+
+        예) c:/model 폴더에 member.xml 이 있는 경우
+        <mapper url="file:////c:/model/member.xml"/>
+
+   -->
+<mappers>
+  <mapper resource="mybatis/mapper/member.xml"/>
+</mappers>
+</configuration>
+
